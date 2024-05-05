@@ -12,6 +12,7 @@ import {UserDto} from '../model/User.model';
 import {RoleDto} from '../model/Role.model';
 import {RoleUserDto} from '../model/RoleUser.model';
 import {MessageService} from 'primeng/api';
+import {jwtDecode} from "jwt-decode";
 
 @Injectable({
     providedIn: 'root'
@@ -41,15 +42,23 @@ export class AuthService {
                 const jwt = 'Bearer '+resp.body.accessToken;
                 jwt != null ? this.tokenService.saveToken(jwt) : false;
 
+                console.log(jwt)
                     // @ts-ignore
-                //  let decodejwt = jwtDecode(jwt) as { sub: string, authority: string };
-                // this.username=decodejwt.sub;
-                // this.roles=decodejwt.authority
+                 let decodejwt = jwtDecode(jwt) as { sub: string, roles: string };
+                console.log(decodejwt)
+                this.username=decodejwt.sub;
+                this.roles=decodejwt.roles
                 this.loadInfos();
                 console.log('you are logged in successfully');
                 console.log(this.roles);
 
-                this.router.navigate(['/' + environment.rootAppUrl + '/admin']);
+                if(this.roles.includes("ROLE_USER")){
+                    this.router.navigateByUrl("/listReadvableEz");
+
+                }
+                if(this.roles.includes("ROLE_ADMIN")){
+                    this.router.navigate(['/' + environment.rootAppUrl + '/admin']);
+                }
             }, (error: HttpErrorResponse) => {
                 this.error = error.error.message;
                 if (error.status === 401) {

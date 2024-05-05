@@ -8,13 +8,16 @@ import {RedevableAdminService} from "../../shared/service/admin/commun/Redevable
 })
 export class ListRedevableComponent {
 
+    data:any
     constructor(private service:RedevableAdminService) {
-        this.service.findAll().subscribe(
-            {
-                next:data=>{
-                    console.log(data)
-                }
-            }
-        )
+        // this.service.findAll().subscribe(
+        //     {
+        //         next:data=>{
+        //             this.data=data
+        //         }
+        //     }
+        // )
+
+        console.log("Mohammed Ezzaim")
     }
 }
